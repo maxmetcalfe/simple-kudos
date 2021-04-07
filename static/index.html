@@ -1,8 +1,23 @@
-<html>
-  <div id="kudos"></div>
+<html lang="eng">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <a id="kudos"></a>
+  <a id="this"></a>
   <script src="emoji-list.js"></script>
   <script src="index.js"></script>
   <script>
-    let kudos = new SimpleKudos("Give me a high five!", "😄", 1234, "https://maxmetcalfe.com");
+    let kudos1 = new SimpleKudos({
+      text: "Give me a high five!",
+      emoji: "😄",
+      id: 451342,
+      elementId: "kudos"
+    });
+    let kudos2 = new SimpleKudos({
+      text: "Give me a high hug!",
+      emoji: "🐻",
+      id: 52355,
+      elementId: "this"
+    });
   </script>
 </html
