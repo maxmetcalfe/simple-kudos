@@ -1,9 +1,11 @@
 {
   "name": "simple-kudos",
   "version": "1.0.0",
-  "description": "",
+  "description": "Really simply kudos buttons",
   "main": "index.js",
   "scripts": {
+    "build": "rm -rf ./build && mkdir ./build && cp src/index.js ./build",
+    "dev": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Max Metcalfe <hello@maxmetcalfe.com>",

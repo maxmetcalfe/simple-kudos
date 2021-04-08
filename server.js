@@ -6,6 +6,8 @@ let kudos = {};
 
 app.use(express.static("static"))
 
+app.use(express.static("build"))
+
 app.get("/kudos", (req, res) => {
   const host = req.get("host");
   const id = req.query.id;
@@ -33,4 +35,5 @@ app.get("/__debug", (req, res) => {
   res.status(200).json(kudos);
 })
 
-app.listen(3000, () => console.log("Listening on port 3000!"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Listening on port ${PORT}!`));
