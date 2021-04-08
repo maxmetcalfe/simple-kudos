@@ -1,3 +1,4 @@
 node_modules
 static/simple-kudos.js
 .vercel
+.env
