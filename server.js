@@ -6,8 +6,6 @@ let kudos = {};
 
 app.use(express.static("static"))
 
-app.use(express.static("build"))
-
 app.get("/kudos", (req, res) => {
   const host = req.get("host");
   const id = req.query.id;
