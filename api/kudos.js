@@ -32,12 +32,16 @@ module.exports = async (req, res) => {
   const existing = await kudos.find({ referer: req.headers.referer, id: id }).toArray();
 
   let count;
+  let toUpdate = existing.length ? existing[0] : null;
+
   if (!existing.length) {
     count = 0;
     const initial = await kudos.insertOne({ referer: req.headers.referer, id: id, count: count });
+  } else if (req.query.add) {
+    count = toUpdate.count + req.query.add;
+    const updated = await kudos.updateOne({ referer: req.headers.referer, id: id }, { $set: { count: count }});
   } else {
-    const toUpdate = existing[0];
-    count = toUpdate.count + 1;
+    count = toUpdate.count;
     const updated = await kudos.updateOne({ referer: req.headers.referer, id: id }, { $set: { count: count }});
   }
 
