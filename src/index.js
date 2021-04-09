@@ -4,7 +4,6 @@ class SimpleKudos {
   constructor(options) {
     this.text = options.text;
     this.emoji = options.emoji;
-    this.color = options.color;
     this.id = options.id;
     this.elementId = options.elementId;
     this.serviceURL = "https://simple-kudos.vercel.app/api/kudos";
@@ -12,7 +11,6 @@ class SimpleKudos {
 
     // Styles
     this.element = document.getElementById(this.elementId);
-    this.element.style.color = this.color;
     this.element.style.cursor = "pointer";
     this.element.style.borderRadius = "20px";
     this.element.style.padding = "5px";
