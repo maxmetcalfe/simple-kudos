@@ -17,7 +17,8 @@ class SimpleKudos {
     this.element.style.borderRadius = "20px";
     this.element.style.padding = "5px";
     this.element.style.display = "inline-block";
-    this.element.style.display = "inline-block";
+    this.element.style.fontFamily = "-apple-system";
+    this.element.style.fontWeight = "600";
 
     if (!this.element) {
       console.warn(`Make sure your page contains an element with id equal to "${this.elementId}"!`)
