@@ -40,7 +40,7 @@ class SimpleKudos {
           console.warn(data.error)
           return;
         }
-        this.element.innerHTML = this.emoji + data.count;
+        this.element.innerHTML = this.emoji + " " + data.count;
       })
   }
 }
