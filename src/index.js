@@ -7,7 +7,7 @@ class SimpleKudos {
     this.color = options.color;
     this.id = options.id;
     this.elementId = options.elementId;
-    this.serviceURL = "http://localhost:3000/kudos";
+    this.serviceURL = "https://simple-kudos.vercel.app/kudos";
     this.increment = 1;
 
     // Styles
