@@ -1,25 +1,27 @@
 # Simple Kudos
 
-Add simple emoji kudos buttons to your website!
+Add a simple emoji kudos button to your website!
 
-Simply include the below script tag in your HTML.
+![example](example.png "simple kudos example")
+
+Just include the below script tag in your HTML.
 
 ```js
 <script src="https://simple-kudos.vercel.app/simple-kudos.js"></script>
 ```
 
-Add an element to your HTML where you want the kudos button.
+Add an HTML element where you want the kudos button.
 
 ```js
 <a id="kudos"></a>
 ```
 
-And then add another script tag where create a SimpleKudos instance and provide it with the element ID of the target element.
+And then in another script tag, create a SimpleKudos and provide it with the element ID of the target element.
 
 ```js
 <script>
   let kudos = new SimpleKudos({
-    emoji: "😄", // Any emoji to use as the button.
+    emoji: "🙌🏼", // Any emoji to use as the button.
     id: "12345", // An arbitrary string to use as an ID.
     elementId: "kudos" // The ID of the element to attach to.
   });
