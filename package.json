@@ -2,7 +2,7 @@
   "name": "simple-kudos",
   "version": "1.0.0",
   "description": "Really simply kudos buttons",
-  "main": "index.js",
+  "main": "server.js",
   "repository": "git@github.com:maxmetcalfe/simple-kudos.git",
   "scripts": {
     "build": "browserify -p tinyify src/index.js -o ./static/simple-kudos.js",
