@@ -31,11 +31,10 @@ module.exports = async (req, res) => {
   const kudos = db.collection("kudos");
   const existing = await kudos.find({ referer: req.headers.referer, id: id }).toArray();
 
-  let count;
+  let count = 0;
   let toUpdate = existing.length ? existing[0] : null;
 
   if (!existing.length) {
-    count = 0;
     const initial = await kudos.insertOne({ referer: req.headers.referer, id: id, count: count });
   } else if (req.query.add) {
     count = toUpdate.count + req.query.add;
