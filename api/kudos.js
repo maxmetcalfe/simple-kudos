@@ -20,6 +20,8 @@ module.exports = async (req, res) => {
   const db = await connect(process.env.MONGODB_URI)
   const id = req.query.id;
 
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   // Don't allow the use of curl.
   if (req.headers["user-agent"].includes("curl")) {
     res.status(403).json({ error: "hey there, chill" });
