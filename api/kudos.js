@@ -39,9 +39,6 @@ module.exports = async (req, res) => {
     const initial = await kudos.insertOne({ referer: req.headers.referer, id: id, count: count });
   } else if (req.query.add) {
     count = toUpdate.count + parseInt(req.query.add);
-    console.log(typeof toUpdate.count);
-    console.log(typeof req.query.add);
-    console.log(typeof count);
     console.log(`update: ${req.headers.referer}, ${id}, count: ${count}`);
     const updated = await kudos.updateOne({ referer: req.headers.referer, id: id }, { $set: { count: count }});
   } else {
