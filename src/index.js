@@ -8,6 +8,7 @@ class SimpleKudos {
     this.elementId = options.elementId;
     this.serviceURL = "https://simple-kudos.vercel.app/api/kudos";
     this.increment = 1;
+    this.count = null;
 
     // Styles
     this.element = document.getElementById(this.elementId);
@@ -20,17 +21,32 @@ class SimpleKudos {
       console.warn(`Make sure your page contains an element with id equal to "${this.elementId}"!`)
     } else {
       this.element.addEventListener("click", this._update.bind(this));
+      this._render();
       this._update();
     }
   }
 
-  _update(event) {
-    var url = `${this.serviceURL}?id=${this.id}`;
-    if (event) {
-      url = `${this.serviceURL}?id=${this.id}&add=${this.increment}`
+  _render() {
+    if (this.count === null) {
+      this.element.innerHTML = this.emoji;
     } else {
-      url = `${this.serviceURL}?id=${this.id}`;
+      this.element.innerHTML = this.emoji + " " + this.count;
     }
+  }
+
+  _update(event) {
+    if (event) {
+      this.count = this.count + this.increment;
+    }
+
+    this._render();
+
+    if (event) {
+      var url = this.serviceURL + "?id=" + this.id + "&add=" + this.increment;
+    } else {
+      var url = this.serviceURL + "?id=" + this.id;
+    }
+
     fetch(url)
       .then(response => response.json())
       .then((data) => {
@@ -38,7 +54,13 @@ class SimpleKudos {
           console.warn(data.error)
           return;
         }
-        this.element.innerHTML = this.emoji + " " + data.count;
+
+        if (data.count >= this.count) {
+          this.count = data.count;
+        }
+
+        this._render(data.count)
+        this.mounted = true;
       })
   }
 }

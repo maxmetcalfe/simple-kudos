@@ -1,6 +1,6 @@
 {
   "name": "simple-kudos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Really simply kudos buttons",
   "main": "server.js",
   "repository": "git@github.com:maxmetcalfe/simple-kudos.git",
