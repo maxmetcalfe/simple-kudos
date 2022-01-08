@@ -105,3 +105,4 @@ class SimpleKudosList {
 }
 
 window.SimpleKudos = SimpleKudos;
+window.SimpleKudosList = SimpleKudosList;
