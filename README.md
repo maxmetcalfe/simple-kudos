@@ -2,8 +2,6 @@
 
 Add a simple emoji kudos button to your website!
 
-![example](example.png "simple kudos example")
-
 Just include the below script tag in your HTML.
 
 ```js
@@ -29,3 +27,5 @@ And then in another script tag, create a SimpleKudos and provide it with the ele
 ```
 
 And, that's it! You'll have a nice little kudos button where your friends can give you kudos!
+
+You can also add multiple SimpleKudos on a single page by creating 

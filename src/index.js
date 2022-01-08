@@ -8,45 +8,85 @@ class SimpleKudos {
     this.elementId = options.elementId;
     this.serviceURL = "https://simple-kudos.vercel.app/api/kudos";
     this.increment = 1;
-    this.count = null;
-
-    // Styles
+    this._count = options.count || 0;
+    this.autoFetch = options.autoFetch;
+  
     this.element = document.getElementById(this.elementId);
     this.element.style.cursor = "pointer";
     this.element.style.borderRadius = "20px";
     this.element.style.padding = "5px";
     this.element.style.display = "inline-block";
-
+  
     if (!this.element) {
       console.warn(`Make sure your page contains an element with id equal to "${this.elementId}"!`)
     } else {
-      this.element.addEventListener("click", this._update.bind(this));
-      this._render();
-      this._update();
+      this.element.addEventListener("click", this.update.bind(this));
+      this.render();
+      if (this.autoFetch) {
+        this.update();
+      }
     }
   }
 
-  _render() {
+  get count() {
+    return this._count;
+  }
+
+  set count(count) {
+    this._count = count;
+  }
+
+  render() {
     if (this.count === null) {
       this.element.innerHTML = this.emoji;
     } else {
-      this.element.innerHTML = this.emoji + " " + this.count;
+      this.element.innerHTML = this.emoji + " " + this.count || "0";
     }
   }
 
-  _update(event) {
+  update(event) {
     if (event) {
+      console.log(event);
       this.count = this.count + this.increment;
     }
-
-    this._render();
-
+  
+    this.render();
+  
     if (event) {
-      var url = this.serviceURL + "?id=" + this.id + "&add=" + this.increment;
+      var url = this.serviceURL + "?ids=" + this.id + "&add=" + this.increment;
     } else {
-      var url = this.serviceURL + "?id=" + this.id;
+      var url = this.serviceURL + "?ids=" + this.id;
     }
+  
+    fetch(url)
+      .then(response => response.json())
+      .then((data) => {
+        if (data.error) {
+          console.warn(data.error)
+          return;
+        }
+    
+        if (data.count >= this.count) {
+          this.count = data.count;
+        }
+    
+        this.render(data.count)
+        this.mounted = true;
+      })
+  }
+}
 
+class SimpleKudosList {
+  constructor(simpleKudos) {
+    this.simpleKudos = simpleKudos;
+    this.serviceURL = "http://localhost:3000/api/kudos";
+  }
+
+  update() {
+    var url = this.serviceURL + "?ids=" + this.simpleKudos.map((simpleKudo) => {
+      return simpleKudo.id
+    });
+    
     fetch(url)
       .then(response => response.json())
       .then((data) => {
@@ -55,12 +95,11 @@ class SimpleKudos {
           return;
         }
 
-        if (data.count >= this.count) {
-          this.count = data.count;
-        }
-
-        this._render(data.count)
-        this.mounted = true;
+        this.simpleKudos.forEach((k) => {
+          const count = data[k.id];
+          k.count = count;
+          k.render();
+        });
       })
   }
 }

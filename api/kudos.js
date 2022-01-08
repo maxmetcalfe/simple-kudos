@@ -18,7 +18,7 @@ async function connect(uri) {
 
 module.exports = async (req, res) => {
   const db = await connect(process.env.MONGODB_URI)
-  const id = req.query.id;
+  const ids = req.query.ids;
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -28,24 +28,40 @@ module.exports = async (req, res) => {
     return;
   }
 
+  let data = {};
   const kudos = db.collection("kudos");
-  const existing = await kudos.find({ referer: req.headers.referer, id: id }).toArray();
+  const existing = await kudos.find({ referer: req.headers.referer, "id": { "$in": ids.split(",") }}).toArray();
+  const existingIds = existing.map(e => e.id);
+  const newKudos = ids.split(",").filter((id) => {
+    return !existingIds.includes(id);
+  })
 
-  let count = 0;
-  let toUpdate = existing.length ? existing[0] : null;
-
-  if (!existing.length) {
-    console.log(`new entry: ${req.headers.referer}, ${id}, count: ${count}`);
-    const initial = await kudos.insertOne({ referer: req.headers.referer, id: id, count: count });
-  } else if (req.query.add) {
-    count = toUpdate.count + parseInt(req.query.add);
-    console.log(`update: ${req.headers.referer}, ${id}, count: ${count}`);
-    const updated = await kudos.updateOne({ referer: req.headers.referer, id: id }, { $set: { count: count }});
+  if (req.query.add) {
+    const operations = existing.map((kudo) => {
+      const count = kudo.count + parseInt(req.query.add);
+      data[kudo.id] = count;
+      return { updateOne: { filter: { referer: req.headers.referer, id: kudo.id }, update: { $set: { count: count}}}}
+    })
+    if (operations.length) {
+      await kudos.bulkWrite(operations);
+    }
   } else {
-    console.log(`fetch entry: ${req.headers.referer}, ${id}, count: ${count}`);
-    count = toUpdate.count;
-    const updated = await kudos.updateOne({ referer: req.headers.referer, id: id }, { $set: { count: count }});
+      existing.forEach((kudo) => {
+        data[kudo.id] = kudo.count;
+    })
+  }
+  
+  if (newKudos) {
+    const createOperations = newKudos.map((newKudo) => {
+      const count = 0;
+      const kudo = { referer: req.headers.referer, id: newKudo, count: count };
+      data[newKudo] = count;
+      return { insertOne: kudo};
+    })
+    if (createOperations.length) {
+      await kudos.bulkWrite(createOperations);
+    }
   }
 
-  res.status(200).json({ count: count });
+  res.status(200).json(data);
 };
