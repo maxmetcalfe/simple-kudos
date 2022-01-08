@@ -48,28 +48,24 @@ class SimpleKudos {
     if (event) {
       this.count = this.count + this.increment;
     }
-  
+
     this.render();
-  
+
     if (event) {
       var url = this.serviceURL + "?ids=" + this.id + "&add=" + this.increment;
     } else {
       var url = this.serviceURL + "?ids=" + this.id;
     }
-  
+    
     fetch(url)
       .then(response => response.json())
       .then((data) => {
-        if (data.error) {
-          console.warn(data.error)
-          return;
+        var count = data[this.id];
+        if (count >= this.count) {
+          this.count = count;
         }
-    
-        if (data.count >= this.count) {
-          this.count = data.count;
-        }
-    
-        this.render(data.count)
+      
+        this.render(count)
         this.mounted = true;
       })
   }
@@ -89,13 +85,8 @@ class SimpleKudosList {
     fetch(url)
       .then(response => response.json())
       .then((data) => {
-        if (data.error) {
-          console.warn(data.error)
-          return;
-        }
-
         this.simpleKudos.forEach((k) => {
-          const count = data[k.id];
+          var count = data[k.id];
           k.count = count;
           k.render();
         });
