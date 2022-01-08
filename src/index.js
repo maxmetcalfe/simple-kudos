@@ -9,14 +9,14 @@ class SimpleKudos {
     this.serviceURL = "https://simple-kudos.vercel.app/api/kudos";
     this.increment = 1;
     this._count = options.count || 0;
-    this.autoFetch = options.autoFetch || true;
-  
+    this.autoFetch = options.autoFetch === undefined ? true : options.autoFetch;
+    
     this.element = document.getElementById(this.elementId);
     this.element.style.cursor = "pointer";
     this.element.style.borderRadius = "20px";
     this.element.style.padding = "5px";
     this.element.style.display = "inline-block";
-  
+    
     if (!this.element) {
       console.warn(`Make sure your page contains an element with id equal to "${this.elementId}"!`)
     } else {
@@ -64,8 +64,8 @@ class SimpleKudos {
         if (count >= this.count) {
           this.count = count;
         }
-      
-        this.render(count)
+        
+        this.render()
         this.mounted = true;
       })
   }
@@ -81,7 +81,7 @@ class SimpleKudosList {
     var url = this.serviceURL + "?ids=" + this.simpleKudos.map((simpleKudo) => {
       return simpleKudo.id
     });
-    
+
     fetch(url)
       .then(response => response.json())
       .then((data) => {
