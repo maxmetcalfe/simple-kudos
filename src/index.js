@@ -9,7 +9,7 @@ class SimpleKudos {
     this.serviceURL = "https://simple-kudos.vercel.app/api/kudos";
     this.increment = 1;
     this._count = options.count || 0;
-    this.autoFetch = options.autoFetch;
+    this.autoFetch = options.autoFetch || true;
   
     this.element = document.getElementById(this.elementId);
     this.element.style.cursor = "pointer";
