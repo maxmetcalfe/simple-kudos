@@ -79,7 +79,7 @@ class SimpleKudos {
 class SimpleKudosList {
   constructor(simpleKudos) {
     this.simpleKudos = simpleKudos;
-    this.serviceURL = "http://localhost:3000/api/kudos";
+    this.serviceURL = "https://simple-kudos.vercel.app/api/kudos";
   }
 
   update() {
