@@ -46,7 +46,6 @@ class SimpleKudos {
 
   update(event) {
     if (event) {
-      console.log(event);
       this.count = this.count + this.increment;
     }
   
