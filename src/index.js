@@ -1,6 +1,4 @@
-
 class SimpleKudos {
-
   constructor(options) {
     this.text = options.text;
     this.emoji = options.emoji;
@@ -10,15 +8,23 @@ class SimpleKudos {
     this.increment = 1;
     this._count = options.count || 0;
     this.autoFetch = options.autoFetch === undefined ? true : options.autoFetch;
-    
-    this.element = document.getElementById(this.elementId);
+
+    this.element = document.getElementById(this.elementId) || null;
+
+    if (!this.element) {
+      console.warn("Kudos element does not exist!");
+      return;
+    }
+
     this.element.style.cursor = "pointer";
     this.element.style.borderRadius = "20px";
     this.element.style.padding = "5px";
     this.element.style.display = "inline-block";
-    
+
     if (!this.element) {
-      console.warn(`Make sure your page contains an element with id equal to "${this.elementId}"!`)
+      console.warn(
+        `Make sure your page contains an element with id equal to "${this.elementId}"!`
+      );
     } else {
       this.element.addEventListener("click", this.update.bind(this));
       this.render();
@@ -37,7 +43,7 @@ class SimpleKudos {
   }
 
   render() {
-    if (this.count === null) {
+    if (!this.count) {
       this.element.innerHTML = this.emoji;
     } else {
       this.element.innerHTML = this.emoji + " " + this.count || "0";
@@ -56,18 +62,18 @@ class SimpleKudos {
     } else {
       var url = this.serviceURL + "?ids=" + this.id;
     }
-    
+
     fetch(url)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then((data) => {
         var count = data[this.id];
         if (count >= this.count) {
           this.count = count;
         }
-        
-        this.render()
+
+        this.render();
         this.mounted = true;
-      })
+      });
   }
 }
 
@@ -78,21 +84,25 @@ class SimpleKudosList {
   }
 
   update() {
-    var url = this.serviceURL + "?ids=" + this.simpleKudos.map((simpleKudo) => {
-      return simpleKudo.id
-    });
+    var url =
+      this.serviceURL +
+      "?ids=" +
+      this.simpleKudos.map((simpleKudo) => {
+        return simpleKudo.id;
+      });
 
     fetch(url)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then((data) => {
         this.simpleKudos.forEach((k) => {
           var count = data[k.id];
           k.count = count;
           k.render();
         });
-      })
+      });
   }
 }
 
 window.SimpleKudos = SimpleKudos;
 window.SimpleKudosList = SimpleKudosList;
+module.exports = SimpleKudos;
