@@ -51,6 +51,11 @@ class SimpleKudos {
   }
 
   update(event) {
+    this.element.style.transform = "rotate(10deg)";
+    setTimeout(() => {
+      this.element.style.transform = "rotate(0deg)";
+    }, 150);
+
     if (event) {
       this.count = this.count + this.increment;
     }
