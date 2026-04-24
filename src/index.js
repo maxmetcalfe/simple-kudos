@@ -56,13 +56,14 @@ class SimpleKudos {
       this.element.style.transform = "rotate(0deg)";
     }, 150);
 
-    if (event) {
+    const isTrustedClick = event && event.isTrusted;
+    if (isTrustedClick) {
       this.count = this.count + this.increment;
     }
 
     this.render();
 
-    if (event) {
+    if (isTrustedClick) {
       var url = this.serviceURL + "?ids=" + this.id + "&add=" + this.increment;
     } else {
       var url = this.serviceURL + "?ids=" + this.id;
